@@ -1,6 +1,9 @@
 package com.laba.arkanoid;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -9,6 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Random;
 
 public class GameView extends SurfaceView implements Runnable {
@@ -146,7 +150,8 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
 
-    private void draw() {
+//    @Override
+    public void draw() {
         if (holder.getSurface().isValid()) {
             Canvas canvas = holder.lockCanvas();
             canvas.drawColor(Color.BLACK);
@@ -168,16 +173,42 @@ public class GameView extends SurfaceView implements Runnable {
                 paint.setColor(Color.RED);
                 paint.setTextSize(100);
                 paint.setTextAlign(Paint.Align.CENTER);
-                canvas.drawText("GAME OVER", getWidth() / 2, getHeight() / 2, paint);
+                canvas.drawText(getResources().getString(R.string.game_over), getWidth() / 2, getHeight() / 2 - 100, paint);
 
                 paint.setColor(Color.WHITE);
                 paint.setTextSize(50);
-                canvas.drawText("Tap to Restart", getWidth() / 2, getHeight() / 2 + 100, paint);
+                canvas.drawText(getResources().getString(R.string.restart), getWidth() / 2, getHeight() / 2 + 50, paint);
+                canvas.drawText(getResources().getString(R.string.back_to_menu), getWidth() / 2, getHeight() / 2 + 150, paint);
             }
 
             holder.unlockCanvasAndPost(canvas);
         }
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (isGameOver && event.getAction() == MotionEvent.ACTION_DOWN) {
+            float x = event.getX();
+            float y = event.getY();
+
+            if (y > getHeight() / 2 + 20 && y < getHeight() / 2 + 80) {
+                restartGame(); // Якщо натиснуто "Restart"
+            } else if (y > getHeight() / 2 + 120 && y < getHeight() / 2 + 180) {
+                // Якщо натиснуто "Main Menu"
+                Context context = getContext();
+                if (context instanceof Activity) {
+                    ((Activity) context).finish(); // Повернутися до MainActivity
+                }
+            }
+            return true;
+        }
+
+        if (!isGameOver && event.getAction() == MotionEvent.ACTION_MOVE) {
+            paddle.setPosition(event.getX(), getWidth());
+        }
+        return true;
+    }
+
 
     private void control() {
         try {
@@ -195,6 +226,10 @@ public class GameView extends SurfaceView implements Runnable {
             e.printStackTrace();
         }
     }
+    public void updateLanguage() {
+        // Просто перерисувати екран
+        invalidate();  // Оновлюємо вигляд екрана, щоб відобразити нові строки
+    }
 
     public void resume() {
         isPlaying = true;
@@ -202,18 +237,25 @@ public class GameView extends SurfaceView implements Runnable {
         gameThread.start();
     }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        if (isGameOver && event.getAction() == MotionEvent.ACTION_DOWN) {
-            restartGame();
-            return true;
-        }
 
-        if (!isGameOver && event.getAction() == MotionEvent.ACTION_MOVE) {
-            paddle.setPosition(event.getX(), getWidth());
-        }
-        return true;
+    public void updateLanguage(String languageCode) {
+        setLocale(languageCode);  // Update the locale of the game
+
+        // Update any game-related text elements if needed (e.g., GAME OVER message)
+        invalidate();  // Redraw the screen to show the updated text
     }
+
+
+    private void setLocale(String languageCode) {
+        Locale locale = new Locale(languageCode);
+        Locale.setDefault(locale);
+
+        Resources resources = getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.setLocale(locale);
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+    }
+
 
     private void restartGame() {
         isGameOver = false;

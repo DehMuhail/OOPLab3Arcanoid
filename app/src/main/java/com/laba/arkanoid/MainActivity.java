@@ -46,26 +46,26 @@ public class MainActivity extends AppCompatActivity {
         languageSwitchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchLanguage();  // Switch language between Ukrainian, English, and German
+                switchLanguage();  // Switch language between Ukrainian and English
             }
         });
     }
 
-    // Function to switch between languages (Ukrainian, English, German)
+    // Function to switch between languages (Ukrainian and English in this example)
     private void switchLanguage() {
         String currentLanguage = loadLanguagePreference();
+        String newLanguage = "uk";  // Default language is Ukrainian
 
-        // Toggle between Ukrainian (uk), English (en), and German (de)
-        String newLanguage;
+        // Toggle between languages
         switch (currentLanguage) {
             case "uk":
-                newLanguage = "en";  // Switch to English
+                newLanguage = "en";  // If current is Ukrainian, change to English
                 break;
             case "en":
-                newLanguage = "de";  // Switch to German
+                newLanguage = "de";  // If current is English, change to German
                 break;
-            default:
-                newLanguage = "uk";  // Switch to Ukrainian
+            case "de":
+                newLanguage = "uk";  // If current is German, change to Ukrainian
                 break;
         }
 
@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         finish();
         startActivity(intent);
     }
+
 
     // Function to load the saved language preference from SharedPreferences
     private String loadLanguagePreference() {
