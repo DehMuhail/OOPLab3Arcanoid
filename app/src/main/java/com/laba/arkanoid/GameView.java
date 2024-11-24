@@ -280,7 +280,9 @@ public class GameView extends SurfaceView implements Runnable {
         isGameOver = false;
         ball.resetPosition(540, 960);
         paddle.resetPosition(440);
-
+        ball.setRadius(20);
+        paddle.setWidth(200);
+        paddle.setHeight(30);
         if (loose) {
             ball.resetSpeed();
             blockCount = 1;

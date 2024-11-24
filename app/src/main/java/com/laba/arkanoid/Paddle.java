@@ -8,6 +8,14 @@ public class Paddle  {
     private float x, y;
     private float width, height;
 
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
     public Paddle(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
