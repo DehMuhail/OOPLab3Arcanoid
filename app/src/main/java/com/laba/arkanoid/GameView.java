@@ -119,7 +119,7 @@ public class GameView extends SurfaceView implements Runnable {
                 ball.getX() > paddle.getX() &&
                 ball.getX() < paddle.getX() + paddle.getWidth()) {
             ball.reverseYSpeed();
-            ball.increaseSpeed(1.095f); // Збільшення швидкості на 9.5%
+            ball.increaseSpeed(1.05f); // Збільшення швидкості на 0.5%
         }
 
         // Оновлення бонусів і перевірка зіткнень з платформою
@@ -231,7 +231,7 @@ public class GameView extends SurfaceView implements Runnable {
 
     private void control() {
         try {
-            Thread.sleep(17);
+            Thread.sleep(14);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
