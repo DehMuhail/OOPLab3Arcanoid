@@ -6,7 +6,7 @@ import android.graphics.Paint;
 
 import java.util.Random;
 
-public class Block {
+public class Block{
     private Random random = new Random();
     private float x, y;
     private float width, height;
@@ -54,4 +54,6 @@ public class Block {
             canvas.drawRect(x, y, x + width, y + height, paint);
         }
     }
+
+
 }

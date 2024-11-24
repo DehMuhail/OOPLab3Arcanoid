@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class Ball {
+public class Ball  {
     private float x, y, radius, speedX, speedY,defaultSpeedX,defaultSpeedY;
 
     public float getY() {
@@ -89,6 +89,7 @@ public class Ball {
         this.speedX=defaultSpeedX;
         this.speedY=defaultSpeedY;
     }
+
 
     public void decreaseSpeed(float factor) {
         speedX *= factor; // Збільшення горизонтальної швидкості

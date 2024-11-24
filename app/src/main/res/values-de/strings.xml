@@ -1,9 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Arkanoid</string>
-    <string name="play_button">Spielen</string>
-    <string name="game_over">SPIEL ENDE</string>
-    <string name="restart">Tippen zum Neustarten</string>
-    <string name="switch_language">Wechseln zu Ukrainisch</string>
-    <string name="play_button_text">Starten</string>
-    <string name="back_to_menu">Zurück zum Menü</string>
 </resources>

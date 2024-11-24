@@ -50,4 +50,7 @@ public class Bonus {
     public float getHeight() {
         return height;
     }
+
+
+
 }

@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class Paddle {
+public class Paddle  {
     private float x, y;
     private float width, height;
 
