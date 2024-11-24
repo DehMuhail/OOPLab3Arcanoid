@@ -2,6 +2,7 @@ package com.laba.arkanoid;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -34,7 +35,8 @@ public class GameView extends SurfaceView implements Runnable {
     private int BLOCK_COLUMNS;
     private int blocksSize;
     private int blockCount = 1;
-
+    private int score = 0; // Track the score
+    private int highestScore = 0; // Store the highest score
     private boolean startGame = true;
 
     public GameView(Context context) {
@@ -48,12 +50,14 @@ public class GameView extends SurfaceView implements Runnable {
         // Ініціалізація м'яча та платформи
         ball = new Ball(540, 960, 20, 10, 10);
         paddle = new Paddle(440, 1800, 200, 30);
+        SharedPreferences preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
+        highestScore = preferences.getInt("highest_score", 0);
     }
 
     // Генерація кількості блоків
     private void generateBlocksCount() {
-        BLOCK_ROWS = 1 + random.nextInt(blockCount);
-        BLOCK_COLUMNS = 1 + random.nextInt(blockCount);
+        BLOCK_ROWS =  1 + random.nextInt(blockCount);  // Minimum 3 rows
+        BLOCK_COLUMNS = 1 + random.nextInt(blockCount);  // Minimum 5 columns
     }
 
     // Генерація блоків
@@ -92,11 +96,21 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
     }
-
+    private void increaseScore() {
+        score += 10; // Increase the score by 10 for each destroyed block
+        // Update the highest score if needed
+        if (score > highestScore) {
+            highestScore = score;
+            // Save the new highest score
+            SharedPreferences.Editor editor = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit();
+            editor.putInt("highest_score", highestScore);
+            editor.apply();
+        }
+    }
     private void update() {
         // Оновлення положення м'яча
         ball.update();
-        if (ball.getY()+10 > paddle.getY()) {
+        if (ball.getY() > paddle.getY()) {
             isGameOver = true; // Встановлюємо стан програшу
             loose = true;
         }
@@ -105,7 +119,7 @@ public class GameView extends SurfaceView implements Runnable {
                 ball.getX() > paddle.getX() &&
                 ball.getX() < paddle.getX() + paddle.getWidth()) {
             ball.reverseYSpeed();
-            ball.increaseSpeed(1.1f); // Збільшення швидкості на 10%
+            ball.increaseSpeed(1.095f); // Збільшення швидкості на 9.5%
         }
 
         // Оновлення бонусів і перевірка зіткнень з платформою
@@ -132,7 +146,7 @@ public class GameView extends SurfaceView implements Runnable {
                 block.setVisible(false); // Блок зникає
                 blocksSize--; // Зменшення кількості блоків
                 ball.reverseYSpeed(); // Зміна напрямку руху м'яча
-
+                increaseScore(); // Increase the score when a block is destroyed
                 generateBonus(block.getX(), block.getY()); // Генерація бонусу
             }
         }
@@ -150,7 +164,6 @@ public class GameView extends SurfaceView implements Runnable {
     }
 
 
-//    @Override
     public void draw() {
         if (holder.getSurface().isValid()) {
             Canvas canvas = holder.lockCanvas();
@@ -169,6 +182,12 @@ public class GameView extends SurfaceView implements Runnable {
                         bonus.draw(canvas, paint);
                     }
                 }
+
+                // Display current score
+                paint.setColor(Color.WHITE);
+                paint.setTextSize(50);
+                canvas.drawText(getResources().getString(R.string.score) + score, 50, 100, paint);
+
             } else {
                 paint.setColor(Color.RED);
                 paint.setTextSize(100);
@@ -266,6 +285,7 @@ public class GameView extends SurfaceView implements Runnable {
             ball.resetSpeed();
             blockCount = 1;
             loose = false;
+            score = 0;
         }
 
         blockCount++;

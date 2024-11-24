@@ -8,13 +8,14 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.Locale;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-
+    private TextView highestScoreTextView; // TextView to display highest score
     private Button playButton; // Play button
     private Button languageSwitchButton; // Language switch button
 
@@ -28,10 +29,15 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+
         // Initialize buttons
         playButton = findViewById(R.id.playButton);
         languageSwitchButton = findViewById(R.id.languageSwitchButton);
+        highestScoreTextView = findViewById(R.id.highestScoreTextView); // Initialize the TextView
 
+        // Display the highest score
+        int highestScore = loadHighestScore();
+        highestScoreTextView.setText(getResources().getString(R.string.high_score) + highestScore);
         // Set listeners for buttons
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +101,10 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("language", language);
         editor.apply();
     }
-
+    private int loadHighestScore() {
+        SharedPreferences preferences = getSharedPreferences("settings", MODE_PRIVATE);
+        return preferences.getInt("highest_score", 0);  // Default is 0 if no score is saved
+    }
     // Function to set the app's locale to the chosen language
     private void setLocale(String language) {
         Locale locale = new Locale(language);

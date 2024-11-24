@@ -6,4 +6,6 @@
     <string name="switch_language">Переключити на англійську</string>
     <string name="play_button_text">Старт</string>
     <string name="back_to_menu">До меню</string>
+    <string name="score">Очки: </string>
+    <string name="high_score">Максимальний рахунок: </string>
 </resources>

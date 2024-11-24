@@ -6,4 +6,6 @@
     <string name="switch_language">Auf Englisch umschalten</string>
     <string name="play_button_text">Start</string>
     <string name="back_to_menu">Zurück zum Menü</string>
+    <string name="score">Punktzahl: </string>
+    <string name="high_score">Höchster Punktestand: </string>
 </resources>
