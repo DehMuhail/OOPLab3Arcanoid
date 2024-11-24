@@ -11,6 +11,7 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -105,21 +106,26 @@ public class GameView extends SurfaceView implements Runnable {
             SharedPreferences.Editor editor = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit();
             editor.putInt("highest_score", highestScore);
             editor.apply();
+            Log.d("GameView", "New highest score: " + highestScore);
         }
     }
     private void update() {
         // Оновлення положення м'яча
         ball.update();
-        if (ball.getY() > paddle.getY()) {
+        if (ball.getY() + ball.getRadius() > getHeight()) {
             isGameOver = true; // Встановлюємо стан програшу
             loose = true;
+            Log.d("GameView", "Game over. Ball hit the bottom.");
         }
         // Перевірка зіткнення м'яча з платформою
         if (ball.getY() + ball.getRadius() > paddle.getY() &&
                 ball.getX() > paddle.getX() &&
                 ball.getX() < paddle.getX() + paddle.getWidth()) {
             ball.reverseYSpeed();
+
             ball.increaseSpeed(1.05f); // Збільшення швидкості на 0.5%
+            Log.d("GameView", "Ball collided with paddle at X: " + ball.getX() + " Y: " + ball.getY());
+
         }
 
         // Оновлення бонусів і перевірка зіткнень з платформою
@@ -147,6 +153,7 @@ public class GameView extends SurfaceView implements Runnable {
                 blocksSize--; // Зменшення кількості блоків
                 ball.reverseYSpeed(); // Зміна напрямку руху м'яча
                 increaseScore(); // Increase the score when a block is destroyed
+                Log.d("GameView", "Block destroyed at X: " + block.getX() + " Y: " + block.getY());
                 generateBonus(block.getX(), block.getY()); // Генерація бонусу
             }
         }
@@ -293,5 +300,6 @@ public class GameView extends SurfaceView implements Runnable {
         blockCount++;
         generateBlocks();
         bonuses.clear();
+        Log.d("GameView", "Game restarted. Score reset to 0.");
     }
 }
