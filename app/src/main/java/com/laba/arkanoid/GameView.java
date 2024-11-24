@@ -112,7 +112,7 @@ public class GameView extends SurfaceView implements Runnable {
     private void update() {
         // Оновлення положення м'яча
         ball.update();
-        if (ball.getY() + ball.getRadius() > getHeight()) {
+        if (ball.getY() + ball.getRadius() > paddle.getHeight()+paddle.getY()) {
             isGameOver = true; // Встановлюємо стан програшу
             loose = true;
             Log.d("GameView", "Game over. Ball hit the bottom.");
