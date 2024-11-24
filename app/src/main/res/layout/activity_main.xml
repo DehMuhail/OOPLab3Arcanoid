@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <!-- Кнопка для старту гри -->
+    <Button
+        android:id="@+id/playButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/play_button"
+        android:textSize="24sp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="200dp"
+        android:layout_centerHorizontal="true"
+        android:background="#FF6200EE"
+        android:textColor="#FFFFFF"/>
+    <Button
+        android:id="@+id/languageSwitchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/switch_language"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>

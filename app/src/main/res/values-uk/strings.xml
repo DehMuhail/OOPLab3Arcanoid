@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Арканоїд</string>
+    <string name="play_button">Грати</string>
+    <string name="game_over">ГРА ЗАКІНЧЕНА</string>
+    <string name="restart">Натисніть, щоб почати знову</string>
+    <string name="switch_language">Переключити на англійську</string>
+    <string name="play_button_text">Старт</string>
+    <string name="back_to_menu">До меню</string>
+</resources>
