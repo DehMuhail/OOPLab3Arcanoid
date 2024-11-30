@@ -14,5 +14,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+<<<<<<< HEAD
+=======
+.idea
+>>>>>>> 4f27408b305543c78469184dab1f34e5a21acd2b
 /app/build
 /.idea

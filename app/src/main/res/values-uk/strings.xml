@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Арканоїд</string>
+    <string name="app_name">Arkanoid</string>
     <string name="play_button">Грати</string>
     <string name="game_over">ГРА ЗАКІНЧЕНА</string>
     <string name="restart">Натисніть, щоб почати знову</string>
