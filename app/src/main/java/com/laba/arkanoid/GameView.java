@@ -36,8 +36,8 @@ public class GameView extends SurfaceView implements Runnable {
     private int BLOCK_COLUMNS;
     private int blocksSize;
     private int blockCount = 1;
-    private int score = 0; // Track the score
-    private int highestScore = 0; // Store the highest score
+    private int score = 0;
+    private int highestScore = 0;
     private boolean startGame = true;
 
     public GameView(Context context) {
@@ -48,20 +48,20 @@ public class GameView extends SurfaceView implements Runnable {
         bonuses = new ArrayList<>();
         blocks = new ArrayList<>();
 
-        // Ініціалізація м'яча та платформи
+
         ball = new Ball(540, 960, 20, 10, 10);
         paddle = new Paddle(440, 1800, 200, 30);
         SharedPreferences preferences = context.getSharedPreferences("settings", Context.MODE_PRIVATE);
         highestScore = preferences.getInt("highest_score", 0);
     }
 
-    // Генерація кількості блоків
+
     private void generateBlocksCount() {
-        BLOCK_ROWS =  1 + random.nextInt(blockCount);  // Minimum 3 rows
+        BLOCK_ROWS = 1 + random.nextInt(blockCount);  // Minimum 3 rows
         BLOCK_COLUMNS = 1 + random.nextInt(blockCount);  // Minimum 5 columns
     }
 
-    // Генерація блоків
+
     private void generateBlocks() {
         blocks.clear();
         generateBlocksCount();
@@ -78,7 +78,7 @@ public class GameView extends SurfaceView implements Runnable {
         blocksSize = blocks.size();
     }
 
-    // Генерація бонусу
+
     private void generateBonus(float x, float y) {
         if (random.nextInt(10) < 3) { // 30% шанс бонусу
             bonuses.add(new Bonus(x, y, 50, 20));
@@ -97,38 +97,40 @@ public class GameView extends SurfaceView implements Runnable {
             }
         }
     }
+
     private void increaseScore() {
-        score += 10; // Increase the score by 10 for each destroyed block
-        // Update the highest score if needed
+        score += 10;
+
         if (score > highestScore) {
             highestScore = score;
-            // Save the new highest score
+
             SharedPreferences.Editor editor = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE).edit();
             editor.putInt("highest_score", highestScore);
             editor.apply();
             Log.d("GameView", "New highest score: " + highestScore);
         }
     }
+
     private void update() {
-        // Оновлення положення м'яча
+
         ball.update();
-        if (ball.getY() + ball.getRadius() > paddle.getHeight()+paddle.getY()) {
-            isGameOver = true; // Встановлюємо стан програшу
+        if (ball.getY() + ball.getRadius() > paddle.getHeight() + paddle.getY()) {
+            isGameOver = true;
             loose = true;
             Log.d("GameView", "Game over. Ball hit the bottom.");
         }
-        // Перевірка зіткнення м'яча з платформою
+
         if (ball.getY() + ball.getRadius() > paddle.getY() &&
                 ball.getX() > paddle.getX() &&
                 ball.getX() < paddle.getX() + paddle.getWidth()) {
             ball.reverseYSpeed();
 
-            ball.increaseSpeed(1.05f); // Збільшення швидкості на 0.5%
+            ball.increaseSpeed(1.05f);
             Log.d("GameView", "Ball collided with paddle at X: " + ball.getX() + " Y: " + ball.getY());
 
         }
 
-        // Оновлення бонусів і перевірка зіткнень з платформою
+
         for (Bonus bonus : bonuses) {
             if (bonus.isVisible()) {
                 bonus.update();
@@ -136,35 +138,35 @@ public class GameView extends SurfaceView implements Runnable {
                 if (bonus.getY() + bonus.getHeight() > paddle.getY() &&
                         bonus.getX() < paddle.getX() + paddle.getWidth() &&
                         bonus.getX() + bonus.getWidth() > paddle.getX()) {
-                    bonus.setVisible(false); // Бонус зникає
-                    ball.decreaseSpeed(0.95f); // Зменшення швидкості м'яча
+                    bonus.setVisible(false);
+                    ball.decreaseSpeed(0.95f);
                 }
             }
         }
 
-        // Перевірка блоків на зіткнення з м'ячем
+
         for (Block block : blocks) {
             if (block.isVisible() &&
                     ball.getX() + ball.getRadius() > block.getX() &&
                     ball.getX() - ball.getRadius() < block.getX() + block.getWidth() &&
                     ball.getY() + ball.getRadius() > block.getY() &&
                     ball.getY() - ball.getRadius() < block.getY() + block.getHeight()) {
-                block.setVisible(false); // Блок зникає
-                blocksSize--; // Зменшення кількості блоків
-                ball.reverseYSpeed(); // Зміна напрямку руху м'яча
-                increaseScore(); // Increase the score when a block is destroyed
+                block.setVisible(false);
+                blocksSize--;
+                ball.reverseYSpeed();
+                increaseScore();
                 Log.d("GameView", "Block destroyed at X: " + block.getX() + " Y: " + block.getY());
-                generateBonus(block.getX(), block.getY()); // Генерація бонусу
+                generateBonus(block.getX(), block.getY());
             }
         }
 
-        // Перевірка програшу
+
         if (ball.getY() + ball.getRadius() > getHeight()) {
             isGameOver = true;
             loose = true;
         }
 
-        // Перевірка виграшу (всі блоки знищено)
+
         if (blocksSize == 0) {
             restartGame();
         }
@@ -190,7 +192,7 @@ public class GameView extends SurfaceView implements Runnable {
                     }
                 }
 
-                // Display current score
+
                 paint.setColor(Color.WHITE);
                 paint.setTextSize(50);
                 canvas.drawText(getResources().getString(R.string.score) + score, 50, 100, paint);
@@ -218,12 +220,12 @@ public class GameView extends SurfaceView implements Runnable {
             float y = event.getY();
 
             if (y > getHeight() / 2 + 20 && y < getHeight() / 2 + 80) {
-                restartGame(); // Якщо натиснуто "Restart"
+                restartGame();
             } else if (y > getHeight() / 2 + 120 && y < getHeight() / 2 + 180) {
-                // Якщо натиснуто "Main Menu"
+
                 Context context = getContext();
                 if (context instanceof Activity) {
-                    ((Activity) context).finish(); // Повернутися до MainActivity
+                    ((Activity) context).finish();
                 }
             }
             return true;
@@ -252,9 +254,10 @@ public class GameView extends SurfaceView implements Runnable {
             e.printStackTrace();
         }
     }
+
     public void updateLanguage() {
-        // Просто перерисувати екран
-        invalidate();  // Оновлюємо вигляд екрана, щоб відобразити нові строки
+
+        invalidate();
     }
 
     public void resume() {
@@ -265,10 +268,10 @@ public class GameView extends SurfaceView implements Runnable {
 
 
     public void updateLanguage(String languageCode) {
-        setLocale(languageCode);  // Update the locale of the game
+        setLocale(languageCode);
 
-        // Update any game-related text elements if needed (e.g., GAME OVER message)
-        invalidate();  // Redraw the screen to show the updated text
+
+        invalidate();
     }
 
 

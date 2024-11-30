@@ -58,17 +58,17 @@ public class Ball  {
     }
 
     public void increaseSpeed(float factor) {
-        speedX *= factor; // Збільшення горизонтальної швидкості
-        speedY *= factor; // Збільшення вертикальної швидкості
+        speedX *= factor;
+        speedY *= factor;
     }
 
     public void update() {
         x += speedX;
         y += speedY;
 
-        // Перевірка зіткнень зі стінами
-        if (x - radius < 0 || x + radius > 1080) speedX = -speedX; // Ширина екрану - 1080
-        if (y - radius < 0 || y + radius > 1920) speedY = -speedY; // Висота екрану - 1920
+
+        if (x - radius < 0 || x + radius > 1080) speedX = -speedX;
+        if (y - radius < 0 || y + radius > 1920) speedY = -speedY;
     }
 
     public void draw(Canvas canvas, Paint paint) {
@@ -92,7 +92,7 @@ public class Ball  {
 
 
     public void decreaseSpeed(float factor) {
-        speedX *= factor; // Збільшення горизонтальної швидкості
-        speedY *= factor; // Збільшення вертикальної швидкості
+        speedX *= factor;
+        speedY *= factor;
     }
 }
