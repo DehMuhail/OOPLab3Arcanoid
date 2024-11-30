@@ -17,12 +17,12 @@ public class Bonus {
     }
 
     public void update() {
-        y += 5; // Бонус падає вниз
+        y += 5;
     }
 
     public void draw(Canvas canvas, Paint paint) {
         if (isVisible) {
-            paint.setColor(Color.BLUE); // Синій колір для бонусу сповільнення
+            paint.setColor(Color.BLUE);
             canvas.drawRect(x, y, x + width, y + height, paint);
         }
     }

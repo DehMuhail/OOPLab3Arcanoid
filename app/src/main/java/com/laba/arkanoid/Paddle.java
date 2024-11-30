@@ -4,7 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-public class Paddle  {
+public class Paddle {
     private float x, y;
     private float width, height;
 
@@ -40,12 +40,12 @@ public class Paddle  {
     }
 
     public void setPosition(float x, int screenWidth) {
-        // Обмежуємо платформу в межах екрана
+
         this.x = Math.max(0, Math.min(x - width / 2, screenWidth - width));
     }
 
     public void resetPosition(float x) {
-        this.x = x; // Відновлюємо початкову позицію
+        this.x = x;
     }
 
     public void draw(Canvas canvas, Paint paint) {
